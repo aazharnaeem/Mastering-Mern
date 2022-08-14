@@ -9,7 +9,7 @@ dotenv.config({
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
 const authenticateJWT = (req, res, next) => {
-    
+
     try {
         // const token = req.cookies.token
         const token = req.headers.authorization.split(" ")[1];

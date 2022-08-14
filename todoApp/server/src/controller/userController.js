@@ -16,7 +16,7 @@ const addTodo = async (req, res) => {
         })
         newTodo.save();
 
-        res.status(200).send({ message: 'Todo added', sucess: true });
+        res.status(200).send({ todo: newTodo, message: 'Todo added', sucess: true });
     }
     catch (error) {
         res.status(500).send({ error: error, message: 'error' })
@@ -36,8 +36,6 @@ const getTodos = async (req, res) => {
         const todos = await todoModel.find({ user: id });
 
         res.status(200).send({ todos: todos, sucess: true })
-
-
     }
     catch (error) {
         res.status(500).send({ error: error, message: 'error' })
@@ -46,21 +44,19 @@ const getTodos = async (req, res) => {
 
 const deleteTodo = async (req, res) => {
     try {
-
         const { id } = req.params;
-        const { todoId } = req.body;
-
+        const { _id } = req.body;
         const exUser = await userModel.doesUserExists(id)
         if (!exUser) {
-            res.status(400).send({ message: 'no such user', sucess: true });
+            return res.status(400).send({ message: 'no such user', sucess: true });
         }
-        const exTodo = await todoModel.find({ _id: todoId, user: id });
+        const exTodo = await todoModel.findOne({ _id: _id, user: id })
         if (!exTodo) {
-            res.status(400).send({ message: 'no such data', sucess: true });
+            return res.status(400).send({ message: 'no such data', sucess: true });
         }
         exTodo.remove()
 
-        res.status(200).send({ message: 'todo deleted', sucess: true });
+        return res.status(200).send({ todo: exTodo, message: 'todo deleted', sucess: true });
     }
     catch (error) {
         res.status(500).send({ error: error, message: 'error' })
@@ -70,20 +66,22 @@ const deleteTodo = async (req, res) => {
 const updateTodo = async (req, res) => {
     try {
         const { id } = req.params;
-        const { todoId, todo } = req.body;
+        console.log('editing')
+        const { newTodo, _id } = req.body;
         const exUser = await userModel.doesUserExists(id)
         if (!exUser) {
-            res.status(400).send({ message: 'no such user', sucess: true });
+            return res.status(400).send({ message: 'no such user', sucess: true });
         }
-        const exTodo = await todoModel.find({ _id: todoId, user: id });
+        const exTodo = await todoModel.findOne({ _id: _id, user: id });
+
         if (!exTodo) {
-            res.status(400).send({ message: 'no such data', sucess: true });
+            return res.status(400).send({ message: 'no such data', sucess: true });
         }
 
-        exTodo.todo = todo;
+        exTodo.todo = newTodo;
         exTodo.save();
 
-        res.status(200).send({ message: 'todo upadated', sucess: true });
+        return res.status(200).send({ todo: exTodo, message: 'todo upadated', sucess: true });
     }
     catch (error) {
         res.status(500).send({ error: error, message: 'error' })

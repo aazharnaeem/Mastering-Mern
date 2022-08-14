@@ -8,15 +8,15 @@ const todoReducer = (state = [], action) => {
         case get:
             return action.payload
         case remove:
-            return [...state.filter(st => st !== action.payload._id)]
+            return [...state.filter(st => st._id !== action.payload._id)]
+            
         case update:
-            state.map(st => {
+            return state.map(st => {
                 if (st._id === action.payload._id) {
                     return { ...st, todo: action.payload.todo }
                 }
                 return st
             });
-            return state;
         default:
             return state
     }

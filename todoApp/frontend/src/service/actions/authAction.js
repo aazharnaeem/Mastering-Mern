@@ -1,11 +1,11 @@
 import axios from 'axios'
 import { UserServer, config } from '../../config/http'
 import { loginType, registerType } from '../actionTypes/types';
-import {useNavigate} from 'react-router-dom'
 const login =(data)=>async(dispatch)=>{
     try{
         const dat = await axios.post(`${UserServer}/auth/login`,data, config);
         if(dat.status >= 200 && dat.status <=300){
+            
             dispatch({
                 type: loginType,
                 payload: dat.data
