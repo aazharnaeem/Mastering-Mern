@@ -11,7 +11,6 @@ const validate = (schema) => (req, res, next) => {
         })
     }
     else {
-        req.body = value;
         next();
     }
 }

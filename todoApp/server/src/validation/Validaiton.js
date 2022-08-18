@@ -1,25 +1,15 @@
-const joi = require('joi');
+const Joi = require('joi')
 
 
-const userValidation = joi.object.keys({
-    firstName: joi.string().min(3).max(8).required(),
-    lastName: joi.string().min(3).max(8).required(),
-    email: joi.string().email(),
-    password: joi.string()
-        // .minOfSpecialCharacters(1)
-        .minOfLowercase(7)
-        .minOfUppercase(1)
-        .minOfNumeric(1)
-        .noWhiteSpaces()
-        .required()
-});
+const registerValidation ={
+    body: Joi.object().keys({
+        firstName:Joi.string().required(),
+        lastName:Joi.string().required(),
+        email: Joi.string().email().required(),
+        password: Joi.string().required(),
+    })
+}
 
-const todoValidaiton =joi.object.keys({
-    user:joi.string().hex().length(24).required(),
-    todo:joi.string().required()
-})
-
-module.exports = {
-    userValidation,
-    todoValidaiton
+module.exports ={
+    registerValidation
 }

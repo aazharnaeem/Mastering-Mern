@@ -16,7 +16,7 @@ const login =(data)=>async(dispatch)=>{
         }
     }
     catch(error){
-        console.log(error)
+        console.log(error.response.data.message)
     }
 }
 
@@ -26,12 +26,9 @@ const register =(data)=>async dispatch=>{
         if(dat.status >= 200 && data.status <=300){
             alert('account created sucessfully');
         }
-        else{
-            console.log('errors')
-        }
     }
     catch(err){
-        console.log('err')
+        console.log(err.response.data.message)
     }
 }
 
